@@ -2,10 +2,18 @@ export class Canvas {
     constructor(type, attributes) {
         this.type = type;
         this.attributes = attributes;
+
+        const root = document.documentElement;
+        this.size = new Size(root.clientWidth, root.clientHeight);
+
         this.canvas = document.createElement('canvas');
     }
 
     appendCanvas(targetId) {
+        this.setSize(this.size.width, this.size.height);
+        const target = document.getElementById(targetId);
+        target.appendChild(this.canvas);
+
         if (this.canvas.getContext) {
             this.context = this.canvas.getContext(this.type, this.attributes);
             if (this.context === null) {
@@ -15,20 +23,33 @@ export class Canvas {
             throw 'canvas unsupported';
         }
 
-        const root = document.documentElement;
-        const width = Math.floor(root.clientWidth * 0.9);
-        const height = Math.floor(root.clientHeight * 0.9);
-        this.setSize(width, height);
-
-        const target = document.getElementById(targetId);
-        target.appendChild(this.canvas);
-
         return this;
     }
 
     setSize(width, height) {
-        this.canvas.setAttribute('width', width.toString(10));
-        this.canvas.setAttribute('height', height.toString(10));
+        this.size.width = width;
+        this.size.height = height;
+        this.canvas.setAttribute('width', this.size.width.toString(10));
+        this.canvas.setAttribute('height', this.size.height.toString(10));
         return this;
+    }
+}
+
+export class Size {
+    constructor(width, height) {
+        this.width = width;
+        this.height = height;
+    }
+    get width() {
+        return this._width;
+    }
+    set width(width) {
+        this._width = Math.floor(width);
+    }
+    get height() {
+        return this._height;
+    }
+    set height(height) {
+        this._height = Math.floor(height);
     }
 }

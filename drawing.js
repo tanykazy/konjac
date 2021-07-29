@@ -3,6 +3,10 @@ import { Canvas } from "./canvas.js";
 export class Drawing extends Canvas {
     constructor() {
         super('2d');
+        // super('2d', {
+        //     alpha: false,
+        //     desynchronized: true
+        // });
     }
 
     sikaku(x, y, width, height, fill, rgba) {
