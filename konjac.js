@@ -86,45 +86,6 @@ export class Entity {
             z);
         return this;
     }
-
-    moveAnimation(step, x, y, z) {
-        frameRequestCallback.call(this, {
-            x: Math.abs(x - this.position.x),
-            y: Math.abs(y - this.position.y),
-            z: Math.abs(z - this.position.z)
-        }, {
-            x: Math.ceil((x - this.position.x) / step),
-            y: Math.ceil((y - this.position.y) / step),
-            z: Math.ceil((z - this.position.z) / step)
-        }, {
-            x: 0,
-            y: 0,
-            z: 0
-        });
-        return this;
-    }
-}
-
-function frameRequestCallback(range, diff, progress, timestamp) {
-    if (progress.x < range.x && progress.y < range.y) {
-        let nx = this.position.x + diff.x;
-        let ny = this.position.y + diff.y;
-        let nz = this.position.z + diff.z;
-        if (progress.x > range.x) {
-            nx = this.position.x;
-        }
-        if (progress.y > range.y) {
-            ny = this.position.y;
-        }
-        this.move(
-            nx,
-            ny,
-            nz);
-        progress.x += diff.x;
-        progress.y += diff.y;
-        progress.z += diff.z;
-        window.requestAnimationFrame(frameRequestCallback.bind(this, range, diff, progress));
-    }
 }
 
 class Position {
@@ -132,6 +93,13 @@ class Position {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+    valueOf() {
+        return {
+            x: this.x,
+            y: this.y,
+            z: this.z
+        };
     }
     set x(x) {
         this._x = Math.floor(x);

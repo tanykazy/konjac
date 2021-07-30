@@ -40,6 +40,12 @@ export class Size {
         this.width = width;
         this.height = height;
     }
+    valueOf() {
+        return {
+            width: this.width,
+            height: this.height
+        };
+    }
     get width() {
         return this._width;
     }
